@@ -1,0 +1,15 @@
+# Build
+bin/
+obj/
+.vs/
+
+# App settings
+appsettings.json
+appsettings.*.json
+
+# User secrets
+secrets.json
+
+# OS
+.DS_Store
+Thumbs.db
