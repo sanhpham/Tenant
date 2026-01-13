@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TenantApp.Application.Abstractions;
 using TenantApp.Application.Abstractions.Repositories;
+using TenantApp.Application.DTO;
 using TenantApp.Domain.Customers;
 
 namespace TenantApp.Application.Services

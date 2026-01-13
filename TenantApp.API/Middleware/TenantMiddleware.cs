@@ -1,5 +1,6 @@
-﻿using TenantApp.Infrastructure.Tenancy;
+﻿using Microsoft.AspNetCore.Authorization;
 using TenantApp.Application.Abstractions;
+using TenantApp.Infrastructure.Tenancy;
 
 namespace TenantApp.Middleware
 {
@@ -12,8 +13,14 @@ namespace TenantApp.Middleware
             _next = next;
         }
 
-        public async void Invoke(HttpContext context , ITenantContext tenantContext)
+        public async Task InvokeAsync(HttpContext context , ITenantContext tenantContext)
         {
+            var endpoint = context.GetEndpoint();
+            if (endpoint?.Metadata.GetMetadata<IAllowAnonymous>() != null)
+            {
+                await _next(context);
+                return;
+            }
             // Lấy tenant từ JWT
             var tenantClaim = context.User?.Claims
                 .FirstOrDefault(c => c.Type == "tenant_id");

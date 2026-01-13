@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TenantApp.Application.Services
+namespace TenantApp.Application.DTO
 {
     public class CreateCustomerRequest
     {

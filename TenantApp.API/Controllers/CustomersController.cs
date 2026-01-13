@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using TenantApp.Application.DTO;
 using TenantApp.Application.Services;
 
 namespace TenantApp.API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/customers")]
     public class CustomersController : ControllerBase
     {

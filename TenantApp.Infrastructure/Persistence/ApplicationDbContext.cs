@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using TenantApp.Application.Abstractions;
 using TenantApp.Domain.Common;
 using TenantApp.Domain.Customers;
+using TenantApp.Domain.Tenant;
+using TenantApp.Domain.User;
 
 namespace TenantApp.Infrastructure.Persistence
 {
@@ -24,6 +26,10 @@ namespace TenantApp.Infrastructure.Persistence
 
         public DbSet<Customer> Customers => Set<Customer>();
 
+        public DbSet<Tenant> Tenant => Set<Tenant>();  
+
+        public DbSet<User> Users => Set<User>();
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -32,9 +38,17 @@ namespace TenantApp.Infrastructure.Persistence
                 typeof(ApplicationDbContext).Assembly
             );
 
-
-            ApplyGlobalTenantFilter(modelBuilder);
+            if(_tenantContext.IsAvailable)
+            {
+                ApplyGlobalTenantFilter(modelBuilder);
+            }
         }
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder options)
+        //{
+        //    options.UseSqlServer(
+        //        "Server=(localDB)\\SanhPV;Database=CRM;User Id=sa;Password=123456789;TrustServerCertificate=True");
+        //}
 
         private void ApplyGlobalTenantFilter(ModelBuilder modelBuilder)
         {
@@ -58,7 +72,7 @@ namespace TenantApp.Infrastructure.Persistence
         {
             modelBuilder.Entity<TEntity>()
                 .HasQueryFilter(e =>
-                    _tenantContext.IsAvailable &&
+                    !_tenantContext.IsAvailable ||
                     e.TenantId == _tenantContext.TenantId);
         }
     }
